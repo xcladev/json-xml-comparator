@@ -1,3 +1,5 @@
+import Comparator from "@/components/Comparator";
+
 export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-4">
@@ -5,7 +7,7 @@ export default function Home() {
       <p className="text-gray-600">
         Pega tus archivos JSON o XML para comparar.
       </p>
-      {/* Aquí irá el formulario */}
+      <Comparator />
     </main>
   );
 }
