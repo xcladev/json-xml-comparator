@@ -164,10 +164,14 @@ export default function Comparator() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-300">
+            <label
+              htmlFor="input1"
+              className="block text-sm font-medium text-gray-300"
+            >
               Primer {diffType.toUpperCase()}
             </label>
             <textarea
+              id="input1"
               className="w-full h-72 p-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none font-mono text-sm text-gray-200 placeholder-gray-500"
               placeholder={`Pega tu ${diffType.toUpperCase()} aquí`}
               value={currentState.input1}
@@ -175,10 +179,14 @@ export default function Comparator() {
             />
           </div>
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-300">
+            <label
+              htmlFor="input2"
+              className="block text-sm font-medium text-gray-300"
+            >
               Segundo {diffType.toUpperCase()}
             </label>
             <textarea
+              id="input2"
               className="w-full h-72 p-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none font-mono text-sm text-gray-200 placeholder-gray-500"
               placeholder={`Pega tu ${diffType.toUpperCase()} aquí`}
               value={currentState.input2}
