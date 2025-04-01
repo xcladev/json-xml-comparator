@@ -1,0 +1,11 @@
+{
+  "title": "JSON-XML Comparator",
+  "description": "Compare JSON and XML files easily",
+  "jsonInput": "JSON Input",
+  "xmlInput": "XML Input",
+  "compare": "Compare",
+  "result": "Result",
+  "language": "Language",
+  "english": "English",
+  "spanish": "Spanish"
+} 
