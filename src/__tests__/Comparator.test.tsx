@@ -2,49 +2,44 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import Comparator from "../components/Comparator";
 
 describe("Comparator", () => {
-  it("renderiza el componente correctamente", () => {
+  it("renders the component correctly", () => {
     render(<Comparator />);
-    expect(screen.getByText("Comparador de JSON")).toBeInTheDocument();
+    expect(screen.getByText("JSON Comparator")).toBeInTheDocument();
   });
 
-  it("cambia entre JSON y XML", () => {
+  it("switches between JSON and XML", () => {
     render(<Comparator />);
     const xmlButton = screen.getByText("XML");
     fireEvent.click(xmlButton);
-    expect(screen.getByText("Comparador de XML")).toBeInTheDocument();
+    expect(screen.getByText("XML Comparator")).toBeInTheDocument();
   });
 
-  it("muestra el resultado de la comparación de JSON", () => {
+  it("shows JSON comparison result", () => {
     render(<Comparator />);
 
-    // Obtener los textareas usando roles
-    const input1 = screen.getByRole("textbox", { name: /primer json/i });
-    const input2 = screen.getByRole("textbox", { name: /segundo json/i });
+    const input1 = screen.getByLabelText(/First JSON File/i);
+    const input2 = screen.getByLabelText(/Second JSON File/i);
 
-    // Ingresar datos de prueba
     fireEvent.change(input1, { target: { value: '{"test": "value1"}' } });
     fireEvent.change(input2, { target: { value: '{"test": "value2"}' } });
 
-    // Hacer clic en el botón de comparar
-    const compareButton = screen.getByText("Comparar");
+    const compareButton = screen.getByText("Compare");
     fireEvent.click(compareButton);
 
-    // Verificar que se muestra el resultado
-    expect(screen.getByText("Resultado de la comparación")).toBeInTheDocument();
+    expect(screen.getByText("Comparison Result")).toBeInTheDocument();
+    expect(screen.getByText("Original File")).toBeInTheDocument();
+    expect(screen.getByText("New File")).toBeInTheDocument();
   });
 
-  it("muestra el resultado de la comparación de XML", () => {
+  it("shows XML comparison result", () => {
     render(<Comparator />);
 
-    // Cambiar a modo XML
     const xmlButton = screen.getByText("XML");
     fireEvent.click(xmlButton);
 
-    // Obtener los textareas usando roles
-    const input1 = screen.getByRole("textbox", { name: /primer xml/i });
-    const input2 = screen.getByRole("textbox", { name: /segundo xml/i });
+    const input1 = screen.getByLabelText(/First XML File/i);
+    const input2 = screen.getByLabelText(/Second XML File/i);
 
-    // Ingresar datos de prueba
     fireEvent.change(input1, {
       target: { value: "<root><test>value1</test></root>" },
     });
@@ -52,88 +47,97 @@ describe("Comparator", () => {
       target: { value: "<root><test>value2</test></root>" },
     });
 
-    // Hacer clic en el botón de comparar
-    const compareButton = screen.getByText("Comparar");
+    const compareButton = screen.getByText("Compare");
     fireEvent.click(compareButton);
 
-    // Verificar que se muestra el resultado
-    expect(screen.getByText("Resultado de la comparación")).toBeInTheDocument();
+    expect(screen.getByText("Comparison Result")).toBeInTheDocument();
+    expect(screen.getByText("Original File")).toBeInTheDocument();
+    expect(screen.getByText("New File")).toBeInTheDocument();
   });
 
-  it("muestra diferencias cuando el JSON es inválido", () => {
+  it("handles invalid JSON input", () => {
     render(<Comparator />);
 
-    // Obtener los textareas usando roles
-    const input1 = screen.getByRole("textbox", { name: /primer json/i });
-    const input2 = screen.getByRole("textbox", { name: /segundo json/i });
+    const input1 = screen.getByLabelText(/First JSON File/i);
+    const input2 = screen.getByLabelText(/Second JSON File/i);
 
-    // Ingresar JSON inválido
     fireEvent.change(input1, { target: { value: "invalid json" } });
     fireEvent.change(input2, { target: { value: '{"test": "value2"}' } });
 
-    // Hacer clic en el botón de comparar
-    const compareButton = screen.getByText("Comparar");
+    const compareButton = screen.getByText("Compare");
     fireEvent.click(compareButton);
 
-    // Verificar que se muestra el resultado con las diferencias
-    expect(screen.getByText("Resultado de la comparación")).toBeInTheDocument();
-    const originalFile = screen.getByText("Archivo Original");
-    expect(originalFile).toBeInTheDocument();
-
-    // Verificar el texto en el resultado de la comparación
-    const resultContainer = screen.getByText("Archivo Original").closest("div");
-    expect(resultContainer).toHaveTextContent("invalid json");
+    expect(screen.getByText(/Invalid JSON format/i)).toBeInTheDocument();
   });
 
-  it("muestra diferencias cuando el XML es inválido", () => {
+  it("handles invalid XML input", () => {
     render(<Comparator />);
 
-    // Cambiar a modo XML
     const xmlButton = screen.getByText("XML");
     fireEvent.click(xmlButton);
 
-    // Obtener los textareas usando roles
-    const input1 = screen.getByRole("textbox", { name: /primer xml/i });
-    const input2 = screen.getByRole("textbox", { name: /segundo xml/i });
+    const input1 = screen.getByLabelText(/First XML File/i);
+    const input2 = screen.getByLabelText(/Second XML File/i);
 
-    // Ingresar XML inválido
     fireEvent.change(input1, { target: { value: "invalid xml" } });
     fireEvent.change(input2, {
       target: { value: "<root><test>value2</test></root>" },
     });
 
-    // Hacer clic en el botón de comparar
-    const compareButton = screen.getByText("Comparar");
+    const compareButton = screen.getByText("Compare");
     fireEvent.click(compareButton);
 
-    // Verificar que se muestra el resultado con las diferencias
-    expect(screen.getByText("Resultado de la comparación")).toBeInTheDocument();
-    const originalFile = screen.getByText("Archivo Original");
-    expect(originalFile).toBeInTheDocument();
-    expect(
-      screen.getByText(/text data outside of root node/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Invalid XML format/i)).toBeInTheDocument();
   });
 
-  it("limpia el resultado al cambiar entre JSON y XML", () => {
+  it("clears result when switching between JSON and XML", () => {
     render(<Comparator />);
 
-    // Realizar una comparación de JSON
-    const input1 = screen.getByRole("textbox", { name: /primer json/i });
-    const input2 = screen.getByRole("textbox", { name: /segundo json/i });
+    const input1 = screen.getByLabelText(/First JSON File/i);
+    const input2 = screen.getByLabelText(/Second JSON File/i);
+
     fireEvent.change(input1, { target: { value: '{"test": "value1"}' } });
     fireEvent.change(input2, { target: { value: '{"test": "value2"}' } });
-    fireEvent.click(screen.getByText("Comparar"));
 
-    // Verificar que se muestra el resultado
-    expect(screen.getByText("Resultado de la comparación")).toBeInTheDocument();
+    const compareButton = screen.getByText("Compare");
+    fireEvent.click(compareButton);
 
-    // Cambiar a XML
-    fireEvent.click(screen.getByText("XML"));
+    expect(screen.getByText("Comparison Result")).toBeInTheDocument();
 
-    // Verificar que el resultado se ha limpiado
-    expect(
-      screen.queryByText("Resultado de la comparación")
-    ).not.toBeInTheDocument();
+    const xmlButton = screen.getByText("XML");
+    fireEvent.click(xmlButton);
+
+    expect(screen.queryByText("Comparison Result")).not.toBeInTheDocument();
+  });
+
+  it("maintains separate state for JSON and XML inputs", () => {
+    render(<Comparator />);
+
+    // Set JSON input
+    const jsonInput1 = screen.getByLabelText(/First JSON File/i);
+    fireEvent.change(jsonInput1, { target: { value: '{"test": "json"}' } });
+
+    // Switch to XML
+    const xmlButton = screen.getByText("XML");
+    fireEvent.click(xmlButton);
+
+    // Set XML input
+    const xmlInput1 = screen.getByLabelText(/First XML File/i);
+    fireEvent.change(xmlInput1, { target: { value: "<test>xml</test>" } });
+
+    // Switch back to JSON
+    const jsonButton = screen.getByText("JSON");
+    fireEvent.click(jsonButton);
+
+    // Verify JSON input is preserved
+    expect(screen.getByLabelText(/First JSON File/i)).toHaveValue(
+      '{"test": "json"}'
+    );
+
+    // Switch to XML and verify XML input is preserved
+    fireEvent.click(xmlButton);
+    expect(screen.getByLabelText(/First XML File/i)).toHaveValue(
+      "<test>xml</test>"
+    );
   });
 });

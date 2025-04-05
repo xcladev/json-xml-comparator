@@ -33,9 +33,10 @@ export default function Comparator() {
 
   const formatJSON = (json: string): string => {
     try {
-      return JSON.stringify(JSON.parse(json), null, 2);
+      const parsed = JSON.parse(json);
+      return JSON.stringify(parsed, null, 2);
     } catch {
-      return json;
+      throw new Error("Invalid JSON format");
     }
   };
 
@@ -43,9 +44,13 @@ export default function Comparator() {
     try {
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xml, "text/xml");
+      const errorNode = xmlDoc.querySelector("parsererror");
+      if (errorNode) {
+        throw new Error("Invalid XML format");
+      }
       return new XMLSerializer().serializeToString(xmlDoc);
     } catch {
-      return xml;
+      throw new Error("Invalid XML format");
     }
   };
 
@@ -66,21 +71,29 @@ export default function Comparator() {
     setError(null);
     try {
       if (diffType === "json") {
-        const json1 = formatJSON(currentState.input1);
-        const json2 = formatJSON(currentState.input2);
-        setResult(diffLines(json1, json2));
-      } else {
-        const xml1 = formatXML(currentState.input1);
-        const xml2 = formatXML(currentState.input2);
-        if (!xml1 || !xml2) {
-          throw new Error("XML inválido");
+        try {
+          const json1 = formatJSON(currentState.input1);
+          const json2 = formatJSON(currentState.input2);
+          setResult(diffLines(json1, json2));
+        } catch (err) {
+          setError(err instanceof Error ? err.message : "Invalid JSON format");
+          setResult(null);
+          return;
         }
-        setResult(diffLines(xml1, xml2));
+      } else {
+        try {
+          const xml1 = formatXML(currentState.input1);
+          const xml2 = formatXML(currentState.input2);
+          setResult(diffLines(xml1, xml2));
+        } catch (err) {
+          setError(err instanceof Error ? err.message : "Invalid XML format");
+          setResult(null);
+          return;
+        }
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Error al procesar los archivos"
-      );
+      setError(err instanceof Error ? err.message : "Error processing files");
+      setResult(null);
     }
   };
 
