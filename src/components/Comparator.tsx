@@ -88,9 +88,7 @@ export default function Comparator() {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <h4 className="text-sm font-medium text-gray-300">
-            Archivo Original
-          </h4>
+          <h4 className="text-sm font-medium text-gray-300">Original File</h4>
           <pre className="p-4 bg-gray-800/50 rounded-xl border border-gray-700 overflow-x-auto">
             <code className="text-sm text-gray-200">
               {diff.map((part, i) => (
@@ -109,7 +107,7 @@ export default function Comparator() {
           </pre>
         </div>
         <div className="space-y-2">
-          <h4 className="text-sm font-medium text-gray-300">Archivo Nuevo</h4>
+          <h4 className="text-sm font-medium text-gray-300">New File</h4>
           <pre className="p-4 bg-gray-800/50 rounded-xl border border-gray-700 overflow-x-auto">
             <code className="text-sm text-gray-200">
               {diff.map((part, i) => (
@@ -136,9 +134,13 @@ export default function Comparator() {
       <div className="p-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-4 md:mb-0">
-            Comparador de {diffType.toUpperCase()}
+            {diffType.toUpperCase()} Comparator
           </h2>
-          <div className="flex space-x-3">
+          <div
+            className="flex space-x-3"
+            role="group"
+            aria-label="File type selection"
+          >
             <button
               className={`relative px-5 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
                 diffType === "json"
@@ -146,6 +148,7 @@ export default function Comparator() {
                   : "text-gray-300 hover:text-white bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700"
               }`}
               onClick={() => handleTypeChange("json")}
+              aria-pressed={diffType === "json"}
             >
               JSON
             </button>
@@ -156,26 +159,28 @@ export default function Comparator() {
                   : "text-gray-300 hover:text-white bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700"
               }`}
               onClick={() => handleTypeChange("xml")}
+              aria-pressed={diffType === "xml"}
             >
               XML
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className="space-y-2">
             <label
               htmlFor="input1"
               className="block text-sm font-medium text-gray-300"
             >
-              Primer {diffType.toUpperCase()}
+              First {diffType.toUpperCase()} File
             </label>
             <textarea
               id="input1"
               className="w-full h-72 p-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none font-mono text-sm text-gray-200 placeholder-gray-500"
-              placeholder={`Pega tu ${diffType.toUpperCase()} aquí`}
+              placeholder={`Paste your ${diffType.toUpperCase()} here`}
               value={currentState.input1}
               onChange={(e) => handleInputChange(1, e.target.value)}
+              aria-label={`First ${diffType.toUpperCase()} input`}
             />
           </div>
           <div className="space-y-2">
@@ -183,14 +188,15 @@ export default function Comparator() {
               htmlFor="input2"
               className="block text-sm font-medium text-gray-300"
             >
-              Segundo {diffType.toUpperCase()}
+              Second {diffType.toUpperCase()} File
             </label>
             <textarea
               id="input2"
               className="w-full h-72 p-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none font-mono text-sm text-gray-200 placeholder-gray-500"
-              placeholder={`Pega tu ${diffType.toUpperCase()} aquí`}
+              placeholder={`Paste your ${diffType.toUpperCase()} here`}
               value={currentState.input2}
               onChange={(e) => handleInputChange(2, e.target.value)}
+              aria-label={`Second ${diffType.toUpperCase()} input`}
             />
           </div>
         </div>
@@ -199,18 +205,23 @@ export default function Comparator() {
           <button
             className="text-white bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm px-8 py-3 text-center transition-all duration-300 shadow-lg hover:shadow-xl"
             onClick={handleComparison}
+            aria-label="Compare files"
           >
-            Comparar
+            Compare
           </button>
         </div>
 
         {error && (
-          <div className="p-4 mb-6 bg-red-900/50 text-red-200 rounded-xl border border-red-700">
+          <div
+            className="p-4 mb-6 bg-red-900/50 text-red-200 rounded-xl border border-red-700"
+            role="alert"
+          >
             <div className="flex items-center">
               <svg
                 className="w-5 h-5 mr-2"
                 fill="currentColor"
                 viewBox="0 0 20 20"
+                aria-hidden="true"
               >
                 <path
                   fillRule="evenodd"
@@ -226,21 +237,21 @@ export default function Comparator() {
         {result && (
           <div className="mt-8">
             <h3 className="text-lg font-semibold text-gray-200 mb-4">
-              Resultado de la comparación
+              Comparison Result
             </h3>
             {renderDiff(result)}
             <div className="mt-6 flex flex-wrap gap-6 text-sm text-gray-300">
               <div className="flex items-center">
                 <div className="w-4 h-4 bg-emerald-900/50 rounded mr-2 border border-emerald-700"></div>
-                <span>Agregado</span>
+                <span>Added</span>
               </div>
               <div className="flex items-center">
                 <div className="w-4 h-4 bg-red-900/50 rounded mr-2 border border-red-700"></div>
-                <span>Eliminado</span>
+                <span>Removed</span>
               </div>
               <div className="flex items-center">
                 <div className="w-4 h-4 bg-gray-800/50 rounded mr-2 border border-gray-700"></div>
-                <span>Sin cambios</span>
+                <span>Unchanged</span>
               </div>
             </div>
           </div>

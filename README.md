@@ -1,56 +1,87 @@
-# json-xml-comparator
+# JSON & XML Comparator
 
-## Descripción
+## Description
 
-Este es un proyecto que consiste en una aplicación web construida con Next.js. Su objetivo es crear un comparador eficiente y robusto entre archivos json o xml.
+A powerful web application built with Next.js that provides an efficient and robust comparison tool for JSON and XML files. Perfect for developers who need to quickly identify differences between file versions.
 
-## Estado del Proyecto
+## Project Status
 
-✅ **Funcional** ✅
+✅ **Production Ready** ✅
 
-- La aplicación permite comparar archivos JSON y XML de manera eficiente
-- Interfaz de usuario intuitiva y responsive
-- Optimizaciones de rendimiento implementadas
+- Efficient JSON and XML file comparison
+- Intuitive and responsive user interface
+- Performance optimizations implemented
+- SEO optimized for better visibility
+- Accessibility features included
 
-## Próximas Mejoras
+## Features
 
-- Optimizaciones de SEO para mejorar la visibilidad en motores de búsqueda
-- Mejoras en la accesibilidad
-- Características adicionales de comparación
+- Real-time comparison of JSON and XML files
+- Clear visualization of differences
+- Modern and responsive UI
+- Large file support
+- Minimalist and optimized design
+- Client-side processing (no data storage)
+- Keyboard accessible
+- Screen reader friendly
 
-## Características
+## Technologies Used
 
-- Comparación en tiempo real de archivos JSON y XML
-- Interfaz de usuario moderna y responsive
-- Visualización clara de diferencias
-- Soporte para archivos grandes
-- Diseño minimalista y optimizado
-
-## Tecnologías Utilizadas
-
-- Next.js
-- React
+- Next.js 15.2
+- React 19
 - TypeScript
 - Tailwind CSS
+- Jest for testing
 
-## Contribución
+## Getting Started
 
-¡Las contribuciones son bienvenidas! Si deseas contribuir, sigue estos pasos:
+1. Clone the repository
+2. Install dependencies:
 
-1. Haz un fork del proyecto.
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`).
-3. Haz commit de tus cambios (`git commit -m 'Agrega nueva funcionalidad'`).
-4. Haz push a la rama (`git push origin feature/nueva-funcionalidad`).
-5. Abre un Pull Request.
+```bash
+npm install
+```
 
-## Licencia
+3. Run the development server:
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+```bash
+npm run dev
+```
 
-## Autor
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Testing
+
+Run the test suite:
+
+```bash
+npm test
+```
+
+Watch mode for development:
+
+```bash
+npm run test:watch
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Author
 
 @xcladev
 
 ---
 
-Hecho con ❤️ para la comunidad de desarrolladores
+Made with ❤️ for the developer community
