@@ -4,15 +4,21 @@
 
 A powerful web application built with Next.js that provides an efficient and robust comparison tool for JSON and XML files. Perfect for developers who need to quickly identify differences between file versions.
 
+## Live Demo
+
+✨ **Now live at [jsonxmlcompare.com](https://jsonxmlcompare.com)** ✨
+
 ## Project Status
 
-✅ **Production Ready** ✅
+✅ **Production Ready & Deployed** ✅
 
 - Efficient JSON and XML file comparison
 - Intuitive and responsive user interface
 - Performance optimizations implemented
 - SEO optimized for better visibility
 - Accessibility features included
+- Privacy-focused with client-side processing
+- Full compliance with legal requirements
 
 ## Features
 
@@ -24,6 +30,7 @@ A powerful web application built with Next.js that provides an efficient and rob
 - Client-side processing (no data storage)
 - Keyboard accessible
 - Screen reader friendly
+- Complete privacy protection
 
 ## Technologies Used
 
@@ -49,6 +56,14 @@ npm run dev
 ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Deployment
+
+The application is deployed and accessible at [jsonxmlcompare.com](https://jsonxmlcompare.com). It uses:
+
+- Vercel for hosting and continuous deployment
+- Automatic HTTPS for secure connections
+- Edge caching for performance optimization
 
 ## Contributing
 
