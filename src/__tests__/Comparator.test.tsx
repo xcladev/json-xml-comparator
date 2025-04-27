@@ -1,7 +1,18 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import Comparator from "../components/Comparator";
+import { useRouter } from "next/navigation";
+
+jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(),
+}));
 
 describe("Comparator", () => {
+  beforeEach(() => {
+    (useRouter as jest.Mock).mockReturnValue({
+      push: jest.fn(),
+    });
+  });
+
   it("renders the component correctly", () => {
     render(<Comparator />);
     expect(screen.getByText("JSON Comparator")).toBeInTheDocument();
@@ -139,5 +150,79 @@ describe("Comparator", () => {
     expect(screen.getByLabelText(/First XML File/i)).toHaveValue(
       "<test>xml</test>"
     );
+  });
+
+  it("initializes with XML type when initialType prop is 'xml'", () => {
+    render(<Comparator initialType="xml" />);
+    expect(screen.getByText("XML Comparator")).toBeInTheDocument();
+    expect(screen.getByLabelText(/First XML File/i)).toBeInTheDocument();
+  });
+
+  it("initializes with JSON type when initialType prop is 'json'", () => {
+    render(<Comparator initialType="json" />);
+    expect(screen.getByText("JSON Comparator")).toBeInTheDocument();
+    expect(screen.getByLabelText(/First JSON File/i)).toBeInTheDocument();
+  });
+
+  it("navigates to JSON comparator page when switching to JSON and isMainPage is false", () => {
+    const mockRouter = { push: jest.fn() };
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
+
+    render(<Comparator initialType="xml" isMainPage={false} />);
+
+    const jsonButton = screen.getByText("JSON");
+    fireEvent.click(jsonButton);
+
+    expect(mockRouter.push).toHaveBeenCalledWith("/json-comparator");
+  });
+
+  it("navigates to XML comparator page when switching to XML and isMainPage is false", () => {
+    const mockRouter = { push: jest.fn() };
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
+
+    render(<Comparator initialType="json" isMainPage={false} />);
+
+    const xmlButton = screen.getByText("XML");
+    fireEvent.click(xmlButton);
+
+    expect(mockRouter.push).toHaveBeenCalledWith("/xml-comparator");
+  });
+
+  it("does not navigate when switching types and isMainPage is true", () => {
+    const mockRouter = { push: jest.fn() };
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
+
+    render(<Comparator initialType="json" isMainPage={true} />);
+
+    const xmlButton = screen.getByText("XML");
+    fireEvent.click(xmlButton);
+
+    expect(mockRouter.push).not.toHaveBeenCalled();
+    expect(screen.getByText("XML Comparator")).toBeInTheDocument();
+  });
+
+  it("displays the legend for comparison results", () => {
+    render(<Comparator />);
+
+    const input1 = screen.getByLabelText(/First JSON File/i);
+    const input2 = screen.getByLabelText(/Second JSON File/i);
+
+    fireEvent.change(input1, { target: { value: '{"test": "value1"}' } });
+    fireEvent.change(input2, { target: { value: '{"test": "value2"}' } });
+
+    const compareButton = screen.getByText("Compare");
+    fireEvent.click(compareButton);
+
+    expect(screen.getByText("Added")).toBeInTheDocument();
+    expect(screen.getByText("Removed")).toBeInTheDocument();
+    expect(screen.getByText("Unchanged")).toBeInTheDocument();
+  });
+
+  it("updates diffType on initialType prop change", () => {
+    const { rerender } = render(<Comparator initialType="json" />);
+    expect(screen.getByText("JSON Comparator")).toBeInTheDocument();
+
+    rerender(<Comparator initialType="xml" />);
+    expect(screen.getByText("XML Comparator")).toBeInTheDocument();
   });
 });

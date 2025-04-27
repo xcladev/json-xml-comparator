@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { diffLines } from "diff";
+import { useRouter } from "next/navigation";
 
 interface DiffResult {
   added?: boolean;
@@ -14,8 +15,17 @@ interface InputState {
   input2: string;
 }
 
-export default function Comparator() {
-  const [diffType, setDiffType] = useState("json");
+interface ComparatorProps {
+  initialType?: "json" | "xml";
+  isMainPage?: boolean;
+}
+
+export default function Comparator({
+  initialType = "json",
+  isMainPage = false,
+}: ComparatorProps) {
+  const router = useRouter();
+  const [diffType, setDiffType] = useState(initialType);
   const [result, setResult] = useState<DiffResult[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -27,6 +37,10 @@ export default function Comparator() {
     input1: "",
     input2: "",
   });
+
+  useEffect(() => {
+    setDiffType(initialType);
+  }, [initialType]);
 
   const currentState = diffType === "json" ? jsonState : xmlState;
   const setCurrentState = diffType === "json" ? setJsonState : setXmlState;
@@ -62,6 +76,14 @@ export default function Comparator() {
   };
 
   const handleTypeChange = (type: "json" | "xml") => {
+    if (!isMainPage && type !== diffType) {
+      if (type === "json") {
+        router.push("/json-comparator");
+      } else {
+        router.push("/xml-comparator");
+      }
+    }
+
     setDiffType(type);
     setResult(null);
     setError(null);
@@ -146,7 +168,13 @@ export default function Comparator() {
     <div className="w-full max-w-7xl mx-auto backdrop-blur-xl bg-white/10 rounded-2xl shadow-2xl overflow-hidden border border-white/20">
       <div className="p-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-          <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-4 md:mb-0">
+          <h2
+            className={`text-2xl font-bold text-transparent bg-clip-text mb-4 md:mb-0 ${
+              diffType === "json"
+                ? "bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600"
+                : "bg-gradient-to-br from-blue-400 via-purple-500 to-purple-600"
+            }`}
+          >
             {diffType.toUpperCase()} Comparator
           </h2>
           <div
@@ -157,7 +185,7 @@ export default function Comparator() {
             <button
               className={`relative px-5 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
                 diffType === "json"
-                  ? "text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300"
+                  ? "text-white bg-gradient-to-br from-cyan-500 via-blue-500 to-blue-600 hover:bg-gradient-to-bl shadow-lg shadow-blue-500/30"
                   : "text-gray-300 hover:text-white bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700"
               }`}
               onClick={() => handleTypeChange("json")}
@@ -168,7 +196,7 @@ export default function Comparator() {
             <button
               className={`relative px-5 py-2.5 rounded-lg transition-all duration-300 font-medium text-sm ${
                 diffType === "xml"
-                  ? "text-white bg-gradient-to-r from-blue-500 to-purple-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300"
+                  ? "text-white bg-gradient-to-br from-blue-500 via-purple-500 to-purple-600 hover:bg-gradient-to-bl shadow-lg shadow-purple-500/30"
                   : "text-gray-300 hover:text-white bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700"
               }`}
               onClick={() => handleTypeChange("xml")}
@@ -216,7 +244,11 @@ export default function Comparator() {
 
         <div className="flex justify-center mb-8">
           <button
-            className="text-white bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm px-8 py-3 text-center transition-all duration-300 shadow-lg hover:shadow-xl"
+            className={`text-white font-medium rounded-lg text-sm px-8 py-3 text-center transition-all duration-300 shadow-lg hover:shadow-xl ${
+              diffType === "json"
+                ? "bg-gradient-to-br from-cyan-500 via-blue-500 to-blue-600 hover:bg-gradient-to-bl shadow-blue-500/20"
+                : "bg-gradient-to-br from-blue-500 via-purple-500 to-purple-600 hover:bg-gradient-to-bl shadow-purple-500/20"
+            }`}
             onClick={handleComparison}
             aria-label="Compare files"
           >
@@ -249,7 +281,13 @@ export default function Comparator() {
 
         {result && (
           <div className="mt-8">
-            <h3 className="text-lg font-semibold text-gray-200 mb-4">
+            <h3
+              className={`text-lg font-semibold text-transparent bg-clip-text mb-4 ${
+                diffType === "json"
+                  ? "bg-gradient-to-br from-cyan-300 to-blue-400"
+                  : "bg-gradient-to-br from-blue-300 to-purple-400"
+              }`}
+            >
               Comparison Result
             </h3>
             {renderDiff(result)}
