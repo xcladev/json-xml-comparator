@@ -3,7 +3,13 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | JSON & XML Comparator",
-  description: "Privacy policy for the JSON and XML comparison tool",
+  description:
+    "Our privacy policy explains how the JSON & XML Comparator tool processes your data. Learn about our client-side processing approach and commitment to data privacy.",
+  keywords:
+    "privacy policy, data privacy, client-side processing, no data storage, secure comparison tool",
+  alternates: {
+    canonical: "https://jsonxmlcompare.com/privacy",
+  },
 };
 
 export default function PrivacyPolicy() {
@@ -20,41 +26,76 @@ export default function PrivacyPolicy() {
               Last updated: {new Date().toLocaleDateString()}
             </p>
 
-            <h2 className="text-xl font-semibold text-cyan-300 mt-6">
+            <h2
+              className="text-xl font-semibold text-cyan-300 mt-6"
+              id="data-processing"
+            >
               Data Processing
             </h2>
             <p className="text-gray-300">
-              JSON & XML Comparator is a tool that operates entirely on the
-              client side. All files and data you provide are processed
-              exclusively in your browser and are never sent to our servers.
+              Our{" "}
+              <Link
+                href="/json-comparator"
+                className="text-cyan-400 hover:text-cyan-300 underline"
+              >
+                JSON comparison tool
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/xml-comparator"
+                className="text-cyan-400 hover:text-cyan-300 underline"
+              >
+                XML comparison tool
+              </Link>{" "}
+              operate entirely on the client side. All files and data you
+              provide are processed exclusively in your browser and are never
+              sent to our servers. This includes any JSON or XML content you
+              paste in for comparison.
             </p>
 
-            <h2 className="text-xl font-semibold text-cyan-300 mt-6">
+            <h2
+              className="text-xl font-semibold text-cyan-300 mt-6"
+              id="information-collection"
+            >
               Information Collection
             </h2>
             <p className="text-gray-300">
               We do not collect any personally identifiable information. The
-              tool does not use cookies or similar technologies to track users.
+              tool does not use cookies or similar technologies to track users
+              or store preferences. Your comparison history is never saved
+              between sessions.
             </p>
 
-            <h2 className="text-xl font-semibold text-cyan-300 mt-6">
+            <h2
+              className="text-xl font-semibold text-cyan-300 mt-6"
+              id="analytics"
+            >
               Analytics and Metrics
             </h2>
             <p className="text-gray-300">
               We might use anonymous analytics tools to better understand the
               usage of our application with the sole purpose of improving the
-              user experience. These tools do not collect personal information.
+              user experience. These tools do not collect personal information
+              and are configured to anonymize IP addresses and other identifying
+              data.
             </p>
 
-            <h2 className="text-xl font-semibold text-cyan-300 mt-6">
+            <h2
+              className="text-xl font-semibold text-cyan-300 mt-6"
+              id="updates"
+            >
               Changes to This Policy
             </h2>
             <p className="text-gray-300">
               We may update our Privacy Policy from time to time. We will notify
               you of any changes by posting the new Privacy Policy on this page.
+              Any changes will be effective immediately upon posting.
             </p>
 
-            <h2 className="text-xl font-semibold text-cyan-300 mt-6">
+            <h2
+              className="text-xl font-semibold text-cyan-300 mt-6"
+              id="contact"
+            >
               Contact
             </h2>
             <p className="text-gray-300">
@@ -69,6 +110,52 @@ export default function PrivacyPolicy() {
               .
             </p>
           </div>
+
+          <nav className="mt-10 pt-6 border-t border-white/10">
+            <h2 className="sr-only">Privacy Policy Navigation</h2>
+            <ul className="flex flex-wrap justify-center gap-4 text-sm">
+              <li>
+                <a
+                  href="#data-processing"
+                  className="text-gray-400 hover:text-cyan-300"
+                >
+                  Data Processing
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#information-collection"
+                  className="text-gray-400 hover:text-cyan-300"
+                >
+                  Information Collection
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#analytics"
+                  className="text-gray-400 hover:text-cyan-300"
+                >
+                  Analytics
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#updates"
+                  className="text-gray-400 hover:text-cyan-300"
+                >
+                  Updates
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#contact"
+                  className="text-gray-400 hover:text-cyan-300"
+                >
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </nav>
 
           <div className="mt-8 flex justify-center">
             <Link
